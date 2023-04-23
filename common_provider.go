@@ -12,7 +12,7 @@ func (cp *commonProvider) Logger() Logger {
 	return cp.logger
 }
 
-func (g *Goadify) buildCommonProvider() CommonProvider {
+func (g *Goadify) commonProvider() CommonProvider {
 	return &commonProvider{
 		logger: g.logger,
 	}

@@ -22,7 +22,7 @@ func WithModule(module Module) Option {
 
 func (g *Goadify) buildModules() (http.Handler, error) {
 	mux := http.NewServeMux()
-	cp := g.buildCommonProvider()
+	cp := g.commonProvider()
 
 	for _, module := range g.modules {
 
