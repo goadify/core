@@ -14,6 +14,7 @@ func (g *Goadify) fillDefaults() {
 func New(options ...Option) *Goadify {
 	g := new(Goadify)
 
+	g.fillDefaults()
 	g.loadOptions(options)
 
 	return g
