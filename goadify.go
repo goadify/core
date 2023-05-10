@@ -1,14 +1,24 @@
 package goadify
 
-import "net/http"
+import (
+	"github.com/goadify/goadify/internal/modules/core"
+	"github.com/goadify/goadify/types"
+	"net/http"
+)
 
 type Goadify struct {
-	logger  Logger
-	modules []Module
+	logger  types.Logger
+	modules []types.Module
 }
 
 func (g *Goadify) fillDefaults() {
 	g.logger = new(loggerStub)
+}
+
+func (g *Goadify) loadCore() {
+	g.loadOptions([]Option{
+		WithModule(core.NewModule(g.modules)),
+	})
 }
 
 func New(options ...Option) *Goadify {
@@ -16,6 +26,7 @@ func New(options ...Option) *Goadify {
 
 	g.fillDefaults()
 	g.loadOptions(options)
+	g.loadCore()
 
 	return g
 }

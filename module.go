@@ -1,20 +1,12 @@
 package goadify
 
 import (
+	"github.com/goadify/goadify/types"
 	"github.com/pkg/errors"
 	"net/http"
 )
 
-type Module interface {
-	Name() string
-
-	Init(CommonProvider) error
-
-	HttpPrefix() string
-	HttpHandler() http.Handler
-}
-
-func WithModule(module Module) Option {
+func WithModule(module types.Module) Option {
 	return func(goadify *Goadify) {
 		goadify.modules = append(goadify.modules, module)
 	}
@@ -38,9 +30,14 @@ func (g *Goadify) buildModules() (http.Handler, error) {
 
 		prefix := module.HttpPrefix()
 
+		handler, err := module.HttpHandler()
+		if err != nil {
+			return nil, errors.Wrapf(err, "can not build module %s", module.Name())
+		}
+
 		mux.Handle(
 			prefix+"/",
-			http.StripPrefix(prefix, module.HttpHandler()),
+			http.StripPrefix(prefix, handler),
 		)
 	}
 
@@ -52,7 +49,7 @@ var (
 	ErrPrefixEndsWithSlash        = errors.New("module's http prefix should NOT ends with slash")
 )
 
-func checkModule(m Module) error {
+func checkModule(m types.Module) error {
 	prefix := m.HttpPrefix()
 
 	if prefix[0] != '/' {
