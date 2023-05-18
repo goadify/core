@@ -1,14 +1,14 @@
 package goadify
 
 import (
+	"github.com/goadify/goadify/interfaces"
 	"github.com/goadify/goadify/internal/modules/core"
-	"github.com/goadify/goadify/types"
 	"net/http"
 )
 
 type Goadify struct {
-	logger  types.Logger
-	modules []types.Module
+	logger  interfaces.Logger
+	modules []interfaces.Module
 }
 
 func (g *Goadify) fillDefaults() {

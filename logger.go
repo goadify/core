@@ -1,8 +1,8 @@
 package goadify
 
-import "github.com/goadify/goadify/types"
+import "github.com/goadify/goadify/interfaces"
 
-func WithLogger(logger types.Logger) Option {
+func WithLogger(logger interfaces.Logger) Option {
 	return func(goadify *Goadify) {
 		goadify.logger = logger
 	}

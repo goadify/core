@@ -1,20 +1,20 @@
 package core
 
 import (
-	"github.com/goadify/goadify/types"
+	"github.com/goadify/goadify/interfaces"
 	"github.com/goadify/openapi/core/go/gen"
 	"net/http"
 )
 
 type Module struct {
-	loadedModules []types.Module
+	loadedModules []interfaces.Module
 }
 
 func (m *Module) Name() string {
 	return "core"
 }
 
-func (m *Module) Init(_ types.CommonProvider) error {
+func (m *Module) Init(_ interfaces.CommonProvider) error {
 	return nil
 }
 
@@ -31,8 +31,8 @@ func (m *Module) HttpHandler() (http.Handler, error) {
 	return s, nil
 }
 
-func NewModule(loadedModules []types.Module) *Module {
-	var modules []types.Module
+func NewModule(loadedModules []interfaces.Module) *Module {
+	var modules []interfaces.Module
 	copy(modules, loadedModules)
 
 	return &Module{

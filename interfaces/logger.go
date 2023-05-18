@@ -1,4 +1,4 @@
-package types
+package interfaces
 
 type Logger interface {
 	Debug(args ...any)
