@@ -6,7 +6,7 @@ import (
 )
 
 func EntityMapping(mapping models.EntityMapping) gen.EntityMapping {
-	return gen.EntityMapping{Fields: Fields(mapping.Fields)}
+	return gen.EntityMapping{Name: mapping.Name, Fields: Fields(mapping.Fields)}
 }
 
 func EntityMappings(mappings []models.EntityMapping) []gen.EntityMapping {
