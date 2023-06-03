@@ -8,7 +8,6 @@ import (
 
 type Module struct {
 	logger             interfaces.Logger
-	entities           []Entity
 	repositories       []Repository
 	entityRepositories map[string]Repository
 
@@ -30,7 +29,7 @@ func (m *Module) HttpPrefix() string {
 }
 
 func (m *Module) HttpHandler() (http.Handler, error) {
-	em := newEntityMaster(m.entities, m.repositories, m.entityRepositories, m.logger)
+	em := newEntityMaster(m.repositories, m.entityRepositories, m.logger)
 
 	hh := newHttpHandler(em, m.isDevMod)
 

@@ -39,6 +39,10 @@ github.com/goadify/openapi/crud/go v0.0.0-20230523073848-eb4a56a85988 h1:gKqKL+R
 github.com/goadify/openapi/crud/go v0.0.0-20230523073848-eb4a56a85988/go.mod h1:zEQY88vtYeoB4qWC5grt61FoxNcaelWC6+QvgLZBu5k=
 github.com/goadify/openapi/crud/go v0.0.0-20230603100118-3d769d1db3a9 h1:SRHLP8uYvNPsFNussBObQyqUKgIxOD0PRFIURGo2G9Y=
 github.com/goadify/openapi/crud/go v0.0.0-20230603100118-3d769d1db3a9/go.mod h1:zEQY88vtYeoB4qWC5grt61FoxNcaelWC6+QvgLZBu5k=
+github.com/goadify/openapi/crud/go v0.0.0-20230603113413-b4863b8afdb1 h1:xy7Gpp5pB7sU1iQKjv0vGAR+2Mn5GbDHO2D7vXaJOLo=
+github.com/goadify/openapi/crud/go v0.0.0-20230603113413-b4863b8afdb1/go.mod h1:zEQY88vtYeoB4qWC5grt61FoxNcaelWC6+QvgLZBu5k=
+github.com/goadify/openapi/navigation/go v0.0.0-20230603114226-38c46d6b9118 h1:+eSTXUG/sSUZ5wh2Oyk3WEdpkAY61S1zHz72V8nvwfU=
+github.com/goadify/openapi/navigation/go v0.0.0-20230603114226-38c46d6b9118/go.mod h1:H38u8cf0ceUd81AdMElZ3rYYxdyvoLRSQxZ2Bfr/C/4=
 github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
 github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=

@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/goadify/goadify"
-	"github.com/goadify/goadify/example/models"
 	"github.com/goadify/goadify/example/repository"
 	"github.com/goadify/goadify/modules/crud"
 	"github.com/sirupsen/logrus"
@@ -18,7 +17,7 @@ func main() {
 		goadify.WithModule(
 			crud.NewModule(
 				crud.WithEntity(
-					new(models.User),
+					"user",
 					new(repository.UserRepository),
 				),
 			),

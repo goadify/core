@@ -16,10 +16,6 @@ const (
 	omitEmptyTag                = ",omitempty"
 )
 
-type Entity interface {
-	EntityName() string
-}
-
 func GetJsonFieldName(field *structs.Field) string {
 	fieldName := field.Name()
 
@@ -61,8 +57,8 @@ func GetDatatype(value any) (dt models.Datatype, err error) {
 	return
 }
 
-func EntityToEntityMapping(entity Entity) (entityMapping models.EntityMapping, errs []error) {
-	entityMapping.Name = entity.EntityName()
+func EntityToEntityMapping(entity any, name string) (entityMapping models.EntityMapping, errs []error) {
+	entityMapping.Name = name
 
 	strHelper := structs.New(entity)
 	fields := strHelper.Fields()

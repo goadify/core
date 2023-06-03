@@ -17,7 +17,8 @@ require (
 	github.com/go-faster/yaml v0.4.6 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/goadify/openapi/crud/go v0.0.0-20230603100118-3d769d1db3a9 // indirect
+	github.com/goadify/openapi/crud/go v0.0.0-20230603113413-b4863b8afdb1 // indirect
+	github.com/goadify/openapi/navigation/go v0.0.0-20230603114226-38c46d6b9118 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect

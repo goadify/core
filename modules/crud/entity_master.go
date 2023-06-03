@@ -10,7 +10,6 @@ import (
 type entityMaster struct {
 	logger interfaces.Logger
 
-	entities           []Entity
 	repositories       []Repository
 	entityRepositories map[string]Repository
 
@@ -42,20 +41,19 @@ func (em *entityMaster) Repository(entityName string) (Repository, bool) {
 func (em *entityMaster) buildEntityMappings() {
 	em.entityMappingsMap = make(map[string]models.EntityMapping)
 
-	for _, entity := range em.entities {
-		entityMapping, errs := structs.EntityToEntityMapping(entity)
+	for name, repository := range em.entityRepositories {
+		entityMapping, errs := structs.EntityToEntityMapping(repository.NewRecord(), name)
 
 		for _, err := range errs {
-			em.logger.Warn(errors.Wrapf(err, "error caught while building entity mappings (%s)", entity.EntityName()))
+			em.logger.Warn(errors.Wrapf(err, "error caught while building repository mappings (%s)", name))
 		}
 
 		em.entityMappingsMap[entityMapping.Name] = entityMapping
 	}
 }
 
-func newEntityMaster(entities []Entity, repositories []Repository, entityRepositories map[string]Repository, logger interfaces.Logger) *entityMaster {
+func newEntityMaster(repositories []Repository, entityRepositories map[string]Repository, logger interfaces.Logger) *entityMaster {
 	em := &entityMaster{
-		entities:           entities,
 		repositories:       repositories,
 		entityRepositories: entityRepositories,
 		logger:             logger,

@@ -7,7 +7,6 @@ import (
 // Entity describes an entity and its identifier
 type Entity interface {
 	EntityName() string
-	ID() any
 }
 
 // Record used for receive/retrieve data

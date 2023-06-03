@@ -97,7 +97,7 @@ func (h *httpHandler) CreateRecord(ctx context.Context, req *gen.Record, params 
 
 	record := repository.NewRecord()
 
-	err = json.Unmarshal(req.Data, &record)
+	err = json.Unmarshal(req.Data, record)
 	if err != nil {
 		return nil, err
 	}
@@ -226,7 +226,7 @@ func (h *httpHandler) UpdateRecordById(ctx context.Context, req *gen.Record, par
 
 	record := repository.NewRecord()
 
-	err = json.Unmarshal(req.Data, &record)
+	err = json.Unmarshal(req.Data, record)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func (h *httpHandler) UpdateRecordById(ctx context.Context, req *gen.Record, par
 	return &result, nil
 }
 
-func (h *httpHandler) DeleteRecordById(ctx context.Context, _ *gen.Record, params gen.DeleteRecordByIdParams) error {
+func (h *httpHandler) DeleteRecordById(ctx context.Context, params gen.DeleteRecordByIdParams) error {
 	repository, ok := h.em.Repository(params.Name)
 	if !ok {
 		return errors.Wrap(ErrEntityNotRegistered, params.Name)
