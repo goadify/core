@@ -1,15 +1,22 @@
 package crud
 
+type AccessRule interface {
+	RuleName() string
+}
+
+var (
+	AccessCreateRule = AccessRule(new(AccessCreate))
+	AccessReadRule   = AccessRule(new(AccessRead))
+	AccessUpdateRule = AccessRule(new(AccessUpdate))
+	AccessDeleteRule = AccessRule(new(AccessDelete))
+)
+
 const (
 	CreateRuleName = "create"
 	ReadRuleName   = "read"
 	UpdateRuleName = "update"
 	DeleteRuleName = "delete"
 )
-
-type AccessRule interface {
-	RuleName() string
-}
 
 type AccessRead struct{}
 

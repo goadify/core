@@ -2,6 +2,7 @@ package crud
 
 import (
 	"github.com/goadify/goadify/interfaces"
+	crudGen "github.com/goadify/openapi/crud/go/gen"
 	"net/http"
 )
 
@@ -10,6 +11,8 @@ type Module struct {
 	entities           []Entity
 	repositories       []Repository
 	entityRepositories map[string]Repository
+
+	isDevMod bool
 }
 
 func (m *Module) Name() string {
@@ -18,6 +21,7 @@ func (m *Module) Name() string {
 
 func (m *Module) Init(provider interfaces.CommonProvider) error {
 	m.logger = provider.Logger()
+	m.isDevMod = provider.IsDevMode()
 	return nil
 }
 
@@ -26,8 +30,16 @@ func (m *Module) HttpPrefix() string {
 }
 
 func (m *Module) HttpHandler() (http.Handler, error) {
-	//TODO implement me
-	panic("implement me")
+	em := newEntityMaster(m.entities, m.repositories, m.entityRepositories, m.logger)
+
+	hh := newHttpHandler(em, m.isDevMod)
+
+	srv, err := crudGen.NewServer(hh)
+	if err != nil {
+		return nil, err
+	}
+
+	return srv, nil
 }
 
 func NewModule(options ...Option) *Module {
