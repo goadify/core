@@ -16,9 +16,13 @@ type Record interface {
 }
 
 // Repository base interface for repositories.
-// see RepositoryCreatable, RepositoryReadable, RepositoryUpdatable, RepositoryDeletable
+// for extend functions see RepositoryCreatable, RepositoryReadable, RepositoryUpdatable, RepositoryDeletable
 type Repository interface {
+	// AccessRules Must return a set of access rules, that allowed for user
 	AccessRules(context.Context) ([]AccessRule, error)
+
+	// NewRecord Must return a new instance of model
+	NewRecord() Record
 }
 
 type RepositoryCreatable interface {
@@ -26,14 +30,14 @@ type RepositoryCreatable interface {
 }
 
 type RepositoryReadable interface {
-	GetByID(context.Context) (Record, error)
+	GetByID(context.Context, string) (Record, error)
 	GetList(ctx context.Context, page int32, perPage int32) (records []Record, totalCount int64, err error)
 }
 
 type RepositoryUpdatable interface {
-	Update(context.Context, Record) error
+	Update(context.Context, Record, string) error
 }
 
 type RepositoryDeletable interface {
-	Delete(context.Context, Record) error
+	Delete(context.Context, string) error
 }
