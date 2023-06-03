@@ -1,4 +1,4 @@
-package core
+package v1
 
 import (
 	"github.com/goadify/goadify/interfaces"
@@ -32,10 +32,8 @@ func (m *Module) HttpHandler() (http.Handler, error) {
 }
 
 func NewModule(loadedModules []interfaces.Module) *Module {
-	var modules []interfaces.Module
-	copy(modules, loadedModules)
 
 	return &Module{
-		loadedModules: modules,
+		loadedModules: loadedModules,
 	}
 }

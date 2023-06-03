@@ -2,11 +2,29 @@ package main
 
 import (
 	"github.com/goadify/goadify"
+	"github.com/goadify/goadify/example/models"
+	"github.com/goadify/goadify/example/repository"
+	"github.com/goadify/goadify/modules/crud"
+	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
 func main() {
-	g := goadify.New()
+
+	g := goadify.New(
+		goadify.WithConfig(
+			goadify.Config{IsDevMode: true},
+		),
+		goadify.WithModule(
+			crud.NewModule(
+				crud.WithEntity(
+					new(models.User),
+					new(repository.UserRepository),
+				),
+			),
+		),
+		goadify.WithLogger(logrus.New()),
+	)
 
 	handler, err := g.Handler()
 	if err != nil {

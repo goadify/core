@@ -12,7 +12,7 @@ func WithModule(module interfaces.Module) Option {
 	}
 }
 
-func (g *Goadify) buildModules() (http.Handler, error) {
+func (g *Goadify) buildHandler() (http.Handler, error) {
 	mux := http.NewServeMux()
 	cp := g.commonProvider()
 
