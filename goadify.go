@@ -2,7 +2,7 @@ package goadify
 
 import (
 	"github.com/goadify/goadify/interfaces"
-	coreV1 "github.com/goadify/goadify/internal/modules/core/v1"
+	"github.com/goadify/goadify/internal/modules/core"
 	"net/http"
 )
 
@@ -21,7 +21,7 @@ func (g *Goadify) loadInternalModules() {
 	copy(modules, g.modules)
 
 	g.loadOptions([]Option{
-		WithModule(coreV1.NewModule(modules)),
+		WithModule(core.NewModule(modules)),
 	})
 }
 
