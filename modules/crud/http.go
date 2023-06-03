@@ -69,7 +69,7 @@ func (h *httpHandler) convertRecords(records []Record) ([]models.IdentifiedRecor
 	return res, nil
 }
 
-func (h *httpHandler) GetEntitiesMappings(ctx context.Context) ([]gen.EntityMapping, error) {
+func (h *httpHandler) GetEntitiesMappings(_ context.Context) ([]gen.EntityMapping, error) {
 	ems := h.em.EntityMappings()
 
 	return hydrator.EntityMappings(ems), nil
@@ -249,7 +249,7 @@ func (h *httpHandler) UpdateRecordById(ctx context.Context, req *gen.Record, par
 	return &result, nil
 }
 
-func (h *httpHandler) DeleteRecordById(ctx context.Context, req *gen.Record, params gen.DeleteRecordByIdParams) error {
+func (h *httpHandler) DeleteRecordById(ctx context.Context, _ *gen.Record, params gen.DeleteRecordByIdParams) error {
 	repository, ok := h.em.Repository(params.Name)
 	if !ok {
 		return errors.Wrap(ErrEntityNotRegistered, params.Name)

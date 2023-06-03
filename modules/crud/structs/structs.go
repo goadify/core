@@ -3,15 +3,17 @@ package structs
 import (
 	"github.com/fatih/structs"
 	"github.com/goadify/goadify/modules/crud/helpers"
-	models2 "github.com/goadify/goadify/modules/crud/models"
+	"github.com/goadify/goadify/modules/crud/models"
 	"github.com/pkg/errors"
 	"reflect"
+	"strings"
 )
 
 const (
-	JsonTagName                 = "json"
-	JsonNotIncludeTag           = "-"
-	ErrDatatypeNotSupportedText = "datatype (%s) not supported"
+	jsonTagName                 = "json"
+	jsonNotIncludeTag           = "-"
+	errDatatypeNotSupportedText = "datatype (%s) not supported"
+	omitEmptyTag                = ",omitempty"
 )
 
 type Entity interface {
@@ -29,10 +31,15 @@ func GetJsonFieldName(field *structs.Field) string {
 		return ""
 	}
 
-	if jsonTag := field.Tag(JsonTagName); len(jsonTag) > 0 {
+	if jsonTag := field.Tag(jsonTagName); len(jsonTag) > 0 {
 		fieldName = jsonTag
 
-		if jsonTag == JsonNotIncludeTag {
+		if strings.Contains(jsonTag, omitEmptyTag) {
+			oeTagPos := strings.Index(jsonTag, omitEmptyTag)
+			jsonTag = jsonTagName[:oeTagPos]
+		}
+
+		if jsonTag == jsonNotIncludeTag {
 			return ""
 		}
 	}
@@ -40,21 +47,21 @@ func GetJsonFieldName(field *structs.Field) string {
 	return fieldName
 }
 
-func GetDatatype(value any) (dt models2.Datatype, err error) {
+func GetDatatype(value any) (dt models.Datatype, err error) {
 	if helpers.IsInteger(value) {
-		dt = models2.DatatypeInteger
+		dt = models.DatatypeInteger
 	} else if helpers.IsString(value) {
-		dt = models2.DatatypeString
+		dt = models.DatatypeString
 	} else if helpers.IsFloat(value) {
-		dt = models2.DatatypeFloat
+		dt = models.DatatypeFloat
 	} else {
-		err = errors.Errorf(ErrDatatypeNotSupportedText, reflect.TypeOf(value).String())
+		err = errors.Errorf(errDatatypeNotSupportedText, reflect.TypeOf(value).String())
 	}
 
-	return dt, err
+	return
 }
 
-func EntityToEntityMapping(entity Entity) (entityMapping models2.EntityMapping, errs []error) {
+func EntityToEntityMapping(entity Entity) (entityMapping models.EntityMapping, errs []error) {
 	entityMapping.Name = entity.EntityName()
 
 	strHelper := structs.New(entity)
@@ -73,7 +80,7 @@ func EntityToEntityMapping(entity Entity) (entityMapping models2.EntityMapping, 
 			continue
 		}
 
-		f := models2.Field{
+		f := models.Field{
 			Name:     name,
 			Datatype: datatype,
 		}
