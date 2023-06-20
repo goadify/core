@@ -2,39 +2,45 @@ package goadify
 
 import (
 	"github.com/goadify/goadify/interfaces"
-	coreV1 "github.com/goadify/goadify/internal/modules/core/v1"
+	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
 type Goadify struct {
-	logger  interfaces.Logger
-	modules []interfaces.Module
-	config  Config
+	logger          interfaces.Logger
+	config          *Config
+	ordinaryModules []interfaces.OrdinaryModule
+	extendedModules []interfaces.ExtendedModule
 }
 
 func (g *Goadify) fillDefaults() {
-	g.logger = new(loggerStub)
+	g.logger = logrus.New()
+	g.config = new(Config)
 }
 
-func (g *Goadify) loadInternalModules() {
-	var modules []interfaces.Module
-	copy(modules, g.modules)
+func (g *Goadify) HttpHandler() (http.Handler, error) {
+	mm, err := newModuleMaster(
+		g.logger,
+		g.config.isDevModeEnabled,
+		g.ordinaryModules,
+		g.extendedModules,
+	)
 
-	g.loadOptions([]Option{
-		WithModule(coreV1.NewModule(modules)),
-	})
+	if err != nil {
+		return nil, err
+	}
+
+	return mm.HttpHandler(), nil
 }
 
 func New(options ...Option) *Goadify {
 	g := new(Goadify)
 
 	g.fillDefaults()
-	g.loadOptions(options)
-	g.loadInternalModules()
+
+	for _, option := range options {
+		option(g)
+	}
 
 	return g
-}
-
-func (g *Goadify) Handler() (http.Handler, error) {
-	return g.buildHandler()
 }

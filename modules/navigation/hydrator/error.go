@@ -2,7 +2,7 @@ package hydrator
 
 import (
 	"github.com/goadify/goadify/pkg/httperr"
-	"github.com/goadify/openapi/crud/go/gen"
+	"github.com/goadify/openapi/navigation/go/gen"
 	"net/http"
 )
 

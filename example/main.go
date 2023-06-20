@@ -2,36 +2,34 @@ package main
 
 import (
 	"github.com/goadify/goadify"
-	"github.com/goadify/goadify/example/repository"
 	"github.com/goadify/goadify/modules/crud"
-	"github.com/sirupsen/logrus"
+	"github.com/goadify/goadify/modules/navigation"
 	"net/http"
 )
 
 func main() {
-
+	userGroup := navigation.NewGroup("User section", 0)
 	g := goadify.New(
-		goadify.WithConfig(
-			goadify.Config{IsDevMode: true},
-		),
-		goadify.WithModule(
-			crud.NewModule(
-				crud.WithEntity(
-					"user",
-					new(repository.UserRepository),
-				),
+		goadify.WithModules(
+			crud.New(
+				crud.Entity{
+					Slug:       "user",
+					Name:       "User",
+					Repository: new(UserRepository),
+					Link:       navigation.NewLink("Profiles", 0),
+					Group:      userGroup,
+				},
 			),
 		),
-		goadify.WithLogger(logrus.New()),
 	)
 
-	handler, err := g.Handler()
+	srv, err := g.HttpHandler()
 	if err != nil {
 		panic(err)
 	}
 
-	if err := http.ListenAndServe("localhost:8080", handler); err != nil {
+	err = http.ListenAndServe("localhost:8080", srv)
+	if err != nil {
 		panic(err)
 	}
-
 }

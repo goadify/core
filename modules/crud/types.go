@@ -2,41 +2,54 @@ package crud
 
 import (
 	"context"
+	"github.com/goadify/goadify/modules/navigation"
 )
 
-// Entity describes an entity and its identifier
-type Entity interface {
-	EntityName() string
+type Model interface {
+	Identifier() any
 }
 
-// Record used for receive/retrieve data
-type Record interface {
-	ID() any
-}
-
-// Repository base interface for repositories.
-// for extend functions see RepositoryCreatable, RepositoryReadable, RepositoryUpdatable, RepositoryDeletable
 type Repository interface {
-	// AccessRules Must return a set of access rules, that allowed for user
+	// AccessRules Must return a set of access rules, that allowed for context
 	AccessRules(context.Context) ([]AccessRule, error)
 
-	// NewRecord Must return a new instance of model
-	NewRecord() Record
+	// NewModel Must return a new instance of model
+	NewModel() Model
 }
 
 type RepositoryCreatable interface {
-	Create(context.Context, Record) error
+	Create(context.Context, Model) error
 }
 
 type RepositoryReadable interface {
-	GetByID(context.Context, string) (Record, error)
-	GetList(ctx context.Context, page int32, perPage int32) (records []Record, totalCount int64, err error)
+	GetByID(context.Context, string) (Model, error)
+	GetList(ctx context.Context, page int32, perPage int32) (models []Model, totalCount int64, err error)
 }
 
 type RepositoryUpdatable interface {
-	Update(context.Context, Record, string) error
+	Update(context.Context, Model, string) error
 }
 
 type RepositoryDeletable interface {
 	Delete(context.Context, string) error
+}
+
+type Link struct {
+	Title    string
+	Priority int64
+}
+
+type Group struct {
+	Title    string
+	Priority int64
+}
+
+type Entity struct {
+	Slug string
+	Name string
+
+	Repository Repository
+
+	Link  *navigation.Link
+	Group *navigation.Group
 }

@@ -39,21 +39,21 @@ func (h *httpHandler) checkAccess(ctx context.Context, repository Repository) (b
 	return true, nil
 }
 
-func (h *httpHandler) convertRecord(record Record) (*models.IdentifiedRecord, error) {
-	id, ok := helpers.ConvertToString(record.ID())
+func (h *httpHandler) convertRecord(record Model) (*models.IdentifiedModel, error) {
+	id, ok := helpers.ConvertToString(record.Identifier())
 
 	if !ok {
 		return nil, ErrIdentifierNotConvertableToString
 	}
 
-	return &models.IdentifiedRecord{
+	return &models.IdentifiedModel{
 		ID:   id,
 		Data: record,
 	}, nil
 }
 
-func (h *httpHandler) convertRecords(records []Record) ([]models.IdentifiedRecord, error) {
-	res := make([]models.IdentifiedRecord, len(records))
+func (h *httpHandler) convertRecords(records []Model) ([]models.IdentifiedModel, error) {
+	res := make([]models.IdentifiedModel, len(records))
 	for i := 0; i < len(records); i++ {
 		model, err := h.convertRecord(records[i])
 		if err != nil {
@@ -95,7 +95,7 @@ func (h *httpHandler) CreateRecord(ctx context.Context, req *gen.Record, params 
 		return nil, errors.Wrap(ErrRepositoryNotSupportsCreate, params.Name)
 	}
 
-	record := repository.NewRecord()
+	record := repository.NewModel()
 
 	err = json.Unmarshal(req.Data, record)
 	if err != nil {
@@ -112,7 +112,7 @@ func (h *httpHandler) CreateRecord(ctx context.Context, req *gen.Record, params 
 		return nil, err
 	}
 
-	result, err := hydrator.Record(*convertedRecord)
+	result, err := hydrator.Model(*convertedRecord)
 	if err != nil {
 		return nil, err
 	}
@@ -150,7 +150,7 @@ func (h *httpHandler) GetRecordById(ctx context.Context, params gen.GetRecordByI
 		return nil, err
 	}
 
-	result, err := hydrator.Record(*convertedRecord)
+	result, err := hydrator.Model(*convertedRecord)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +193,7 @@ func (h *httpHandler) GetRecords(ctx context.Context, params gen.GetRecordsParam
 		return nil, err
 	}
 
-	items, err := hydrator.Records(convertedRecords)
+	items, err := hydrator.Models(convertedRecords)
 	if err != nil {
 		return nil, err
 	}
@@ -224,7 +224,7 @@ func (h *httpHandler) UpdateRecordById(ctx context.Context, req *gen.Record, par
 		return nil, errors.Wrap(ErrRepositoryNotSupportsUpdate, params.Name)
 	}
 
-	record := repository.NewRecord()
+	record := repository.NewModel()
 
 	err = json.Unmarshal(req.Data, record)
 	if err != nil {
@@ -241,7 +241,7 @@ func (h *httpHandler) UpdateRecordById(ctx context.Context, req *gen.Record, par
 		return nil, err
 	}
 
-	result, err := hydrator.Record(*convertedRecord)
+	result, err := hydrator.Model(*convertedRecord)
 	if err != nil {
 		return nil, err
 	}
